@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Zitoun Twin – Restaurant Marocain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdf8f0 0%, #f9e5c1 100%);
+            color: #2c1e12;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid #c97e3a;
+            padding-bottom: 1rem;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            color: #b45f2b;
+            letter-spacing: 1px;
+        }
+        .logo p {
+            color: #8b5a2b;
+            font-style: italic;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .user-info {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #deb887;
+            padding-bottom: 0.5rem;
+        }
+        .tab {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #7a4b1f;
+        }
+        .tab.active {
+            background: #c97e3a;
+            color: white;
+            box-shadow: 0 4px 10px rgba(201,126,58,0.3);
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-content {
+            padding: 1.2rem;
+        }
+        .card h3 {
+            font-size: 1.4rem;
+            color: #b45f2b;
+            margin-bottom: 0.5rem;
+        }
+        .price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #e67e22;
+            margin: 0.5rem 0;
+        }
+        .badge {
+            display: inline-block;
+            background: #f0e3d0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        button {
+            background: #c97e3a;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.8rem;
+            width: 100%;
+        }
+        button:hover {
+            background: #a56128;
+            transform: scale(0.98);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #c97e3a;
+            color: #c97e3a;
+        }
+        .btn-outline:hover {
+            background: #c97e3a;
+            color: white;
+        }
+        form {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin: 0.5rem 0 1rem;
+            border: 1px solid #e2cfb3;
+            border-radius: 30px;
+            font-size: 1rem;
+        }
+        .flex-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .message {
+            padding: 0.8rem;
+            border-radius: 30px;
+            margin-bottom: 1rem;
+            background: #f0e3d0;
+            color: #2c1e12;
+        }
+        .error {
+            background: #ffe0dd;
+            color: #b33;
+            border-left: 5px solid #b33;
+        }
+        .success {
+            background: #e0f7e8;
+            color: #2b6e3c;
+            border-left: 5px solid #2b6e3c;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #a97b4b;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <h1>Dar Zitoun Twin</h1>
+            <p>Cuisine marocaine authentique</p>
+        </div>
+        <div id="authArea" class="auth-buttons">
+            <!-- Dynamique -->
+        </div>
+    </div>
+
+    <div id="tabsContainer" style="display: none;">
+        <div class="tabs">
+            <button class="tab active" data-tab="plats">Carte des plats</button>
+            <button class="tab" data-tab="commandes">Mes commandes</button>
+            <button class="tab" data-tab="nouvelleCommande">Nouvelle commande</button>
+            <button class="tab" data-tab="admin" id="adminTab" style="display: none;">Admin (creer plat)</button>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="message">Connectez-vous pour commencer</div>
+    </div>
+    <footer>Dar Zitoun Twin – API RESTful</footer>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:5000/api/v1';
+    let token = localStorage.getItem('token');
+    let userRole = localStorage.getItem('userRole') || 'client';
+    let currentTab = 'plats';
+
+    async function apiCall(endpoint, options = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+            ...options,
+            headers
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || data.message || 'Erreur serveur');
+        return data;
+    }
+
+    function showMessage(msg, type = 'info') {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${type === 'error' ? 'error' : (type === 'success' ? 'success' : '')}`;
+        msgDiv.innerText = msg;
+        const content = document.getElementById('content');
+        const oldMsg = content.querySelector('.message');
+        if (oldMsg && oldMsg.classList.contains('message')) oldMsg.remove();
+        content.prepend(msgDiv);
+        setTimeout(() => msgDiv.remove(), 4000);
+    }
+
+    function updateAuthUI() {
+        const authArea = document.getElementById('authArea');
+        const tabsContainer = document.getElementById('tabsContainer');
+        if (token) {
+            authArea.innerHTML = `
+                <div class="user-info">${localStorage.getItem('userName') || 'Client'} (${userRole})</div>
+                <button id="logoutBtn" class="btn-outline">Deconnexion</button>
+            `;
+            document.getElementById('logoutBtn')?.addEventListener('click', () => {
+                localStorage.clear();
+                token = null;
+                userRole = 'client';
+                location.reload();
+            });
+            tabsContainer.style.display = 'block';
+            if (userRole === 'admin') document.getElementById('adminTab').style.display = 'block';
+            loadCurrentTab();
+        } else {
+            authArea.innerHTML = `
+                <button id="showLoginBtn" class="btn-outline">Connexion</button>
+                <button id="showRegisterBtn">Inscription</button>
+            `;
+            tabsContainer.style.display = 'none';
+            document.getElementById('content').innerHTML = `
+                <div id="authForms">
+                    <form id="loginForm">
+                        <h3>Connexion</h3>
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                        <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                        <button type="submit">Se connecter</button>
+                    </form>
+                    <form id="registerForm">
+                        <h3>Inscription</h3>
+                        <input type="text" id="regNom" placeholder="Nom complet" required>
+                        <input type="email" id="regEmail" placeholder="Email" required>
+                        <input type="tel" id="regPhone" placeholder="Telephone (06...)" required>
+                        <input type="password" id="regPassword" placeholder="Mot de passe (6+)" required>
+                        <button type="submit">Creer un compte</button>
+                    </form>
+                </div>
+            `;
+            document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+            document.getElementById('registerForm')?.addEventListener('submit', handleRegister);
+        }
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        try {
+            const data = await apiCall('/clients/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+            token = data.token;
+            localStorage.setItem('token', token);
+            localStorage.setItem('userRole', data.data.role);
+            localStorage.setItem('userName', data.data.nom);
+            userRole = data.data.role;
+            showMessage('Connexion reussie', 'success');
+            updateAuthUI();
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        const nom = document.getElementById('regNom').value;
+        const email = document.getElementById('regEmail').value;
+        const telephone = document.getElementById('regPhone').value;
+        const password = document.getElementById('regPassword').value;
+        try {
+            const data = await apiCall('/clients/register', {
+                method: 'POST',
+                body: JSON.stringify({ nom, email, telephone, password })
+            });
+            token = data.token;
+            localStorage.setItem('token', token);
+            localStorage.setItem('userRole', 'client');
+            localStorage.setItem('userName', nom);
+            userRole = 'client';
+            showMessage('Inscription reussie', 'success');
+            updateAuthUI();
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+    }
+
+    function loadCurrentTab() {
+        if (!token) return;
+        const activeTab = document.querySelector('.tab.active')?.dataset.tab || currentTab;
+        currentTab = activeTab;
+        if (activeTab === 'plats') renderPlats();
+        else if (activeTab === 'commandes') renderCommandes();
+        else if (activeTab === 'nouvelleCommande') renderNouvelleCommande();
+        else if (activeTab === 'admin') renderAdmin();
+    }
+
+    async function renderPlats() {
+        const params = new URLSearchParams();
+        const catFilter = document.getElementById('catFilter')?.value;
+        if (catFilter && catFilter !== 'all') params.append('categorie', catFilter);
+        const url = `/plats${params.toString() ? '?' + params.toString() : ''}`;
+        try {
+            const data = await apiCall(url);
+            let html = `
+                <div class="filter-bar">
+                    <label>Categorie : </label>
+                    <select id="catFilter">
+                        <option value="all">Tous</option>
+                        <option value="tajine">Tajine</option>
+                        <option value="couscous">Couscous</option>
+                        <option value="grillade">Grillade</option>
+                        <option value="pastilla">Pastilla</option>
+                        <option value="salade marocaine">Salade</option>
+                        <option value="patisserie">Patisserie</option>
+                    </select>
+                    <button id="applyFilter">Appliquer</button>
+                </div>
+                <div class="cards-grid" id="platsGrid"></div>
+            `;
+            document.getElementById('content').innerHTML = html;
+            document.getElementById('applyFilter')?.addEventListener('click', renderPlats);
+            const grid = document.getElementById('platsGrid');
+            data.data.forEach(plat => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-content">
+                        <h3>${plat.nom}</h3>
+                        <p>${plat.ingredients?.join(', ') || ''}</p>
+                        <div class="price">${plat.prix} DH</div>
+                        <span class="badge">${plat.categorie}</span>
+                        ${!plat.disponible ? '<div>Indisponible</div>' : ''}
+                        ${userRole === 'client' && plat.disponible ? `<button class="orderBtn" data-id="${plat._id}" data-nom="${plat.nom}">Commander</button>` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            document.querySelectorAll('.orderBtn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const platId = btn.dataset.id;
+                    const quantite = prompt('Quantite ?', 1);
+                    if (!quantite) return;
+                    try {
+                        await apiCall('/commandes', {
+                            method: 'POST',
+                            body: JSON.stringify({ plats: [{ platId, quantite: parseInt(quantite) }], delaiJours: 2 })
+                        });
+                        showMessage('Commande ajoutee', 'success');
+                        document.querySelector('.tab[data-tab="commandes"]').click();
+                    } catch (err) {
+                        showMessage(err.message, 'error');
+                    }
+                });
+            });
+        } catch (err) {
+            document.getElementById('content').innerHTML = `<div class="message error">Erreur : ${err.message}</div>`;
+        }
+    }
+
+    async function renderCommandes() {
+        try {
+            const data = await apiCall('/commandes');
+            if (!data.data.length) {
+                document.getElementById('content').innerHTML = `<div class="message">Aucune commande pour le moment.</div>`;
+                return;
+            }
+            let html = `<div class="cards-grid">`;
+            data.data.forEach(cmd => {
+                const datePrev = new Date(cmd.dateLivraisonPrevue).toLocaleDateString();
+                const platsList = cmd.plats.map(p => `${p.quantite}x ${p.plat?.nom || 'plat'}`).join(', ');
+                html += `
+                    <div class="card">
+                        <div class="card-content">
+                            <strong>Commande #${cmd._id.slice(-5)}</strong><br>
+                            Date commande : ${new Date(cmd.dateCommande).toLocaleDateString()}<br>
+                            Livraison prevue : ${datePrev}<br>
+                            ${platsList}<br>
+                            Montant : ${cmd.montantTotal} DH<br>
+                            Statut : <strong>${cmd.statut}</strong><br>
+                            ${cmd.fraisRetard ? `Frais de retard : ${cmd.fraisRetard} DH` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            document.getElementById('content').innerHTML = html;
+        } catch (err) {
+            document.getElementById('content').innerHTML = `<div class="message error">Erreur chargement commandes : ${err.message}</div>`;
+        }
+    }
+
+    async function renderNouvelleCommande() {
+        try {
+            const platsData = await apiCall('/plats');
+            const platsDispo = platsData.data.filter(p => p.disponible);
+            let html = `
+                <form id="commandeForm">
+                    <h3>Passer une commande</h3>
+                    <div id="commandePlats">
+                        <div class="flex-row" style="gap:0.5rem;">
+                            <select class="platSelect" style="flex:2">
+                                <option value="">-- Choisir un plat --</option>
+                                ${platsDispo.map(p => `<option value="${p._id}" data-prix="${p.prix}">${p.nom} - ${p.prix} DH</option>`).join('')}
+                            </select>
+                            <input type="number" class="quantite" placeholder="Qte" value="1" style="width:80px;">
+                            <button type="button" class="addPlatBtn">Ajouter</button>
+                        </div>
+                    </div>
+                    <div id="listePlatsCommande" style="margin:1rem 0;"></div>
+                    <label>Delai de livraison (jours) : <input type="number" id="delai" value="2" min="1" max="5"></label>
+                    <button type="submit">Confirmer la commande</button>
+                </form>
+            `;
+            document.getElementById('content').innerHTML = html;
+            let selectedPlats = [];
+
+            function updateListe() {
+                const container = document.getElementById('listePlatsCommande');
+                container.innerHTML = selectedPlats.map((item, idx) => `
+                    <div>${item.nom} x${item.quantite} = ${item.prix * item.quantite} DH 
+                    <button type="button" class="removePlat" data-idx="${idx}">Supprimer</button></div>
+                `).join('');
+                document.querySelectorAll('.removePlat').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const idx = parseInt(btn.dataset.idx);
+                        selectedPlats.splice(idx, 1);
+                        updateListe();
+                    });
+                });
+            }
+
+            document.querySelector('.addPlatBtn')?.addEventListener('click', () => {
+                const select = document.querySelector('.platSelect');
+                const quantite = parseInt(document.querySelector('.quantite').value);
+                const option = select.options[select.selectedIndex];
+                if (!select.value) return;
+                const platId = select.value;
+                const nom = option.text.split('-')[0].trim();
+                const prix = parseFloat(option.dataset.prix);
+                if (isNaN(quantite) || quantite < 1) return;
+                selectedPlats.push({ platId, nom, quantite, prix });
+                updateListe();
+                select.value = '';
+                document.querySelector('.quantite').value = 1;
+            });
+
+            document.getElementById('commandeForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (selectedPlats.length === 0) return showMessage('Ajoutez au moins un plat', 'error');
+                const delaiJours = parseInt(document.getElementById('delai').value);
+                const platsPayload = selectedPlats.map(p => ({ platId: p.platId, quantite: p.quantite }));
+                try {
+                    await apiCall('/commandes', {
+                        method: 'POST',
+                        body: JSON.stringify({ plats: platsPayload, delaiJours })
+                    });
+                    showMessage('Commande enregistree', 'success');
+                    document.querySelector('.tab[data-tab="commandes"]').click();
+                } catch (err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        } catch (err) {
+            document.getElementById('content').innerHTML = `<div class="message error">Erreur : ${err.message}</div>`;
+        }
+    }
+
+    async function renderAdmin() {
+        if (userRole !== 'admin') return;
+        let html = `
+            <form id="createPlatForm">
+                <h3>Ajouter un nouveau plat</h3>
+                <input type="text" id="platNom" placeholder="Nom du plat" required>
+                <input type="number" id="platPrix" placeholder="Prix (DH)" required>
+                <select id="platCategorie" required>
+                    <option value="tajine">Tajine</option>
+                    <option value="couscous">Couscous</option>
+                    <option value="grillade">Grillade</option>
+                    <option value="pastilla">Pastilla</option>
+                    <option value="salade marocaine">Salade marocaine</option>
+                    <option value="patisserie">Patisserie</option>
+                </select>
+                <input type="text" id="platIngredients" placeholder="Ingredients (separes par des virgules)">
+                <button type="submit">Creer le plat</button>
+            </form>
+        `;
+        document.getElementById('content').innerHTML = html;
+        document.getElementById('createPlatForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nom = document.getElementById('platNom').value;
+            const prix = parseFloat(document.getElementById('platPrix').value);
+            const categorie = document.getElementById('platCategorie').value;
+            const ingredients = document.getElementById('platIngredients').value.split(',').map(s=>s.trim());
+            try {
+                await apiCall('/plats', {
+                    method: 'POST',
+                    body: JSON.stringify({ nom, prix, categorie, ingredients, disponible: true })
+                });
+                showMessage('Plat cree', 'success');
+                document.querySelector('.tab[data-tab="plats"]').click();
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        });
+    }
+
+    function bindTabs() {
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.tab;
+                loadCurrentTab();
+            });
+        });
+    }
+
+    updateAuthUI();
+    setInterval(() => {
+        if (token && (currentTab === 'plats' || currentTab === 'commandes')) loadCurrentTab();
+    }, 5000);
+
+    const observer = new MutationObserver(() => {
+        if (document.querySelector('.tab')) bindTabs();
+    });
+    observer.observe(document.getElementById('content'), { childList: true, subtree: true });
+    setTimeout(() => { if (document.querySelector('.tab')) bindTabs(); }, 500);
+</script>
+</body>
+</html>
