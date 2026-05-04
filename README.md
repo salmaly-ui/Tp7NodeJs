@@ -41,4 +41,4 @@ https://github.com/user-attachments/assets/39483135-b99f-4175-93d6-e7f0d2b39143
 git clone https://github.com/salmaly-ui/Tp7NodeJs.git
 cd dar-zitoun-api
 npm install
-cp .env.example .env   # puis éditer les variables
+ 
